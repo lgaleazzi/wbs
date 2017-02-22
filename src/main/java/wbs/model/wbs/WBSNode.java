@@ -136,6 +136,18 @@ public class WBSNode {
 
     //Methods to check node properties and position in the tree incl. getters
 
+    public void setTree(WBSTree tree) {
+        this.tree = tree;
+    }
+
+    public void setBreakdownId(String breakdownId) {
+        this.breakdownId = breakdownId;
+    }
+
+    public void setParent(WBSNode parent) {
+        this.parent = parent;
+    }
+
     public boolean hasParent() {
         if (parent == null) {
             return false;
@@ -213,19 +225,6 @@ public class WBSNode {
     }
 
 
-    //protected and private setters
-    //TODO: this should be protected, can I deal with it with the builder pattern?
-    public void setTree(WBSTree tree) {
-        this.tree = tree;
-    }
-
-    protected void setBreakdownId(String breakdownId) {
-        this.breakdownId = breakdownId;
-    }
-
-    private void setParent(WBSNode parent) {
-        this.parent = parent;
-    }
 
 
 }
