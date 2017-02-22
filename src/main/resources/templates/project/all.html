@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="layout :: site-head"></head>
+<body>
+<header th:replace="layout :: site-header"></header>
+<main class="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>My Projects</h2>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="container">
+        <h2><a class="btn btn-default" href="/projects/add">Add project</a></h2>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div th:each="proj : ${projects}" class="col-md-4">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 th:text="${proj.name}"></h4>
+                    </div>
+                    <div class="row panel-body" th:object="${proj}">
+                        <div class="col-xs-2 well-sm">
+                            <a class="btn btn-default " th:href="@{|/projects/*{id}|}">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                            </a>
+                        </div>
+                        <div class="col-xs-2 well-sm">
+                            <a class="btn btn-default" th:href="@{|/projects/*{id}/edit|}">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </a>
+                        </div>
+                        <div class="col-xs-2 well-sm">
+                            <a class="btn btn-default" th:href="@{|/wbs/*{wbsTree.id}|}">
+                                <span class="glyphicon glyphicon-blackboard"></span>
+                            </a>
+                        </div>
+                        <div class="col-xs-2 well-sm">
+                        <form th:action="@{|/projects/*{id}/delete|}" method="post">
+                            <button class="btn btn-default" type="submit">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="layout :: site-footer"></footer>
+</body>
+</html>

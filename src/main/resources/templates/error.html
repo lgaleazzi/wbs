@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="layout :: site-head"></head>
+<body>
+<header th:replace="layout :: site-header"></header>
+<main>
+    <div class="container">
+        <h2 th:text="|${#httpServletRequest.getAttribute('javax.servlet.error.status_code')} Error|">500 Error</h2>
+        <div th:if="${#httpServletRequest.getAttribute('javax.servlet.error.exception')} != null">
+            <p th:text="${#httpServletRequest.getAttribute('javax.servlet.error.exception')}">Error Message</p>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="layout :: site-footer"></footer>
+</body>
+</html>

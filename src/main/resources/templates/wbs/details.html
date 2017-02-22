@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="layout :: site-head"></head>
+<body>
+<header th:replace="layout :: site-header"></header>
+<main>
+    <div class="container">
+        <h2 th:text="${element.name}"></h2>
+    </div>
+    <hr />
+    <div class="container">
+        <p>element properties come here</p>
+        <a class="btn btn-default" th:href="@{|/wbs/element/${node.id}/edit|}">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+        <form th:action="@{|/wbs/element/${node.id}/delete|}" method="post">
+            <button class="btn btn-default" type="submit">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+        </form>
+    </div>
+    <div class="container">
+        <div class="container" th:if="${node.hasParent()}">
+            <h3>Parent Element</h3>
+            <a th:href="@{|/wbs/element/${node.parent.id}|}" th:text="${node.parent.element.name}"></a>
+        </div>
+        <div class="container" >
+            <h3>Children Elements</h3>
+            <a th:href="@{|/wbs/add/${node.id}|}">+</a>
+            <p th:if="${node.isLeaf()}">No children elements</p>
+            <ul th:if="${!node.isLeaf()}">
+                <li th:each="child : ${node.children}">
+                    <a th:href="@{|/wbs/element/${child.id}|}" th:text="${child.element.name}"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="layout :: site-footer"></footer>
+</body>
+</html>

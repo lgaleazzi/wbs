@@ -1,0 +1,35 @@
+package wbs.model.authentication;
+
+import javax.persistence.*;
+
+/**
+ * Created by livia on 06.02.17.
+ */
+@Entity
+@Table(name = "role")
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column
+    private String name;
+
+    public Role() {}
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}

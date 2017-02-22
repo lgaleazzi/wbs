@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="layout :: site-head"></head>
+<body>
+<header th:replace="layout :: site-header"></header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-11">
+                <h2 th:text="${heading}">Form</h2>
+            </div>
+            <div class="col-xs-1 align-right">
+                <form th:action="@{|/projects/${project.id}/delete|}" method="post">
+                    <button class="btn btn-default" type="submit">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="container">
+        <form th:action="@{${action}}" method="post" th:object="${project}">
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="hidden" th:field="*{id}" />
+                    <input type="hidden" th:field="*{user}" />
+                    <!-- input type="hidden" th:if="*{wbsTree} != null" th:field="*{wbsTree}" /-->
+                    <div class="form-group">
+                        <label th:for="*{name}">Project Name</label>
+                        <input class="form-control" type="text" th:field="*{name}" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">
+                    <button class="btn btn-default" type="submit">Save</button>
+                </div>
+                <div class="col-md-1">
+                    <a class="btn btn-default" th:href="@{/}">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer th:replace="layout :: site-footer"></footer>
+</body>
+</html>

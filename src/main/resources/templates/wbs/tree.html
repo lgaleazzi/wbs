@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head th:replace="layout :: site-head"></head>
+<body>
+<header th:replace="layout :: site-header"></header>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Work Breakdown Structure</h2>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="container">
+        <div class="tree">
+            <ul>
+                <li>
+                    <div class="node">
+                        <a class="btn btn-primary" th:href="@{|/wbs/element/${root.id}|}" th:text="${root.element.name}">
+                        </a>
+                        <a class="badge" th:href="@{|/wbs/add/${root.id}|}">+</a>
+                    </div>
+                    <div class="node" th:fragment="node" th:remove="tag">
+                        <ul th:if="${!root.isLeaf()}">
+                            <li th:each="child : ${root.children}" >
+                                <div >
+                                    <a class="btn btn-default" th:href="@{|/wbs/element/${child.id}|}" th:text="${child.element.name}"></a>
+                                    <a class="badge" th:href="@{|/wbs/add/${child.id}|}">+</a>
+                                    <div th:with="root = ${child}"
+                                         th:include="this :: node" th:remove="tag" />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+<footer th:replace="layout :: site-footer"></footer>
+</body>
+</html>
