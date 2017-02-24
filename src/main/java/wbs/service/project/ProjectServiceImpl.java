@@ -1,14 +1,17 @@
 package wbs.service.project;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import wbs.model.wbs.elements.WBSElement;
 import wbs.repository.ProjectRepository;
 import wbs.model.project.Project;
+import wbs.service.UnauthorizedException;
 import wbs.service.wbs.WBSNodeService;
 import wbs.service.wbs.WBSTreeService;
 import wbs.service.wbs.elements.WBSElementService;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 /**
@@ -36,7 +39,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project findbyId(Long id) {
-        return projectRepository.findOne(id);
+        Project project = projectRepository.findForCurrentUser(id);
+        if (project == null && projectRepository.findOne(id) != null) {
+            throw new UnauthorizedException("You are not allowed to see this project");
+        }
+        return project;
     }
 
     @Override
