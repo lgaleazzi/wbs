@@ -6,17 +6,15 @@ import org.springframework.stereotype.Service;
 import wbs.model.wbs.elements.WBSElement;
 import wbs.repository.ProjectRepository;
 import wbs.model.project.Project;
+import wbs.service.ObjectNotFoundException;
 import wbs.service.UnauthorizedException;
 import wbs.service.wbs.WBSNodeService;
 import wbs.service.wbs.WBSTreeService;
 import wbs.service.wbs.elements.WBSElementService;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
-/**
- * Created by livia on 06.01.17.
- */
+
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
@@ -33,17 +31,19 @@ public class ProjectServiceImpl implements ProjectService {
     private WBSTreeService wbsTreeService;
 
     @Override
-    public List<Project> findAll() {
-        return projectRepository.findAll();
+    public List<Project> findAllForCurrentUser() {
+        return projectRepository.findAllForCurrentUser();
     }
 
     @Override
     public Project findbyId(Long id) {
-        Project project = projectRepository.findForCurrentUser(id);
-        if (project == null && projectRepository.findOne(id) != null) {
-            throw new UnauthorizedException("You are not allowed to see this project");
+        if (projectRepository.findOne(id) == null) {
+            throw new ObjectNotFoundException("The project was not found");
         }
-        return project;
+        if (!currentUserIsAuthorized(id)) {
+            throw new UnauthorizedException("You are not allowed to access this project");
+        }
+        return projectRepository.findForCurrentUser(id);
     }
 
     @Override
@@ -59,18 +59,37 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project edit(Project project) {
+        if(currentUserIsAuthorized(project.getId())) {
+            Project savedProject = projectRepository.save(project);
 
-        Project savedProject = projectRepository.save(project);
+            WBSElement element = savedProject.getWbsTree().getRoot().getElement();
+            element.setName(savedProject.getName());
+            wbsElementService.edit(element);
 
-        WBSElement element = savedProject.getWbsTree().getRoot().getElement();
-        element.setName(savedProject.getName());
-        wbsElementService.edit(element);
-
-        return savedProject;
+            return savedProject;
+        } else {
+            throw new UnauthorizedException("You are not allowed to access this project");
+        }
     }
 
     @Override
     public void deleteById(Long id) {
+        if (projectRepository.findOne(id) == null) {
+            throw new ObjectNotFoundException("The project was not found");
+        }
+        if(!currentUserIsAuthorized(id)) {
+            throw new UnauthorizedException("You are not allowed to access this project");
+        }
         projectRepository.delete(id);
     }
+
+    @Override
+    public boolean currentUserIsAuthorized(Long id) {
+        if(projectRepository.findForCurrentUser(id) == null && projectRepository.findOne(id) != null) {
+            return false;
+        }
+        return true;
+    }
+
+
 }

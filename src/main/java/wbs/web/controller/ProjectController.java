@@ -30,7 +30,7 @@ public class ProjectController {
     //view all projects
     @RequestMapping("/")
     public String listProjects(Model model) {
-        List<Project> allProjects = projectService.findAll();
+        List<Project> allProjects = projectService.findAllForCurrentUser();
         model.addAttribute("projects", allProjects);
         return "project/all";
     }

@@ -13,8 +13,9 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("select p from Project p where p.user.id=:#{principal.id}")
-    List<Project> findAll();
+    List<Project> findAllForCurrentUser();
 
     @Query("select p from Project p where p.user.id=:#{principal.id} and p.id=:#{#id}")
     Project findForCurrentUser(@Param("id") Long id);
+
 }
