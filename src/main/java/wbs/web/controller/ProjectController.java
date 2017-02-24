@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import wbs.model.authentication.User;
 import wbs.model.project.Project;
@@ -19,6 +17,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+@SessionAttributes({"project"})
 public class ProjectController {
 
     @Autowired
@@ -68,7 +67,7 @@ public class ProjectController {
 
     //Update an existing project
     @RequestMapping(value = "/projects/{projId}", method = RequestMethod.POST)
-    public String updateProject(@Valid Project project, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String updateProject(@ModelAttribute("project") @Valid Project project, BindingResult result, RedirectAttributes redirectAttributes) {
 
         //if errors exist, add errors to model on redirect, and add project back to repopulate form data
         if (result.hasErrors()) {

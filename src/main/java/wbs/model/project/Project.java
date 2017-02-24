@@ -20,6 +20,10 @@ public class Project {
     @Size(min = 1, max = 30)
     private String name;
 
+    @Column
+    @Size(max = 2000)
+    private String description;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wbstree_id")
     private WBSTree wbsTree;
@@ -32,9 +36,10 @@ public class Project {
         wbsTree = new WBSTree();
     }
 
-    public Project(Long id, String name) {
+    public Project(Long id, String name, String description) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.wbsTree = new WBSTree();
     }
 
@@ -52,6 +57,14 @@ public class Project {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public WBSTree getWbsTree() {
