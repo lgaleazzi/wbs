@@ -1,9 +1,5 @@
 package wbs.model.wbs.elements;
 
-
-
-import wbs.model.wbs.WBSNode;
-
 import javax.persistence.*;
 
 @Entity
@@ -18,7 +14,8 @@ public class WBSElement {
     @Column
     private String name;
 
-
+    @Column
+    private String description;
 
     public WBSElement() {}
 
@@ -39,4 +36,11 @@ public class WBSElement {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

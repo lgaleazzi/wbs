@@ -1,16 +1,18 @@
 package wbs.web.controller;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.sun.xml.internal.bind.api.impl.NameConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import wbs.model.wbs.WBSNode;
 import wbs.model.wbs.WBSTree;
 import wbs.model.wbs.elements.StandardWBSElement;
 import wbs.model.wbs.elements.WBSElement;
+import wbs.model.wbs.elements.WorkPackage;
+import wbs.service.InvalidObjectException;
+import wbs.service.ObjectNotFoundException;
 import wbs.service.wbs.WBSNodeService;
 import wbs.service.wbs.WBSTreeService;
 import wbs.service.wbs.elements.WBSElementService;
@@ -20,6 +22,7 @@ import wbs.service.wbs.elements.WBSElementService;
  */
 
 @Controller
+@SessionAttributes({"element"})
 public class WBSController {
 
     @Autowired
@@ -56,10 +59,8 @@ public class WBSController {
     public String addChildForm(@PathVariable Long parentNodeId, Model model) {
         WBSNode parentNode = wbsNodeService.findbyId(parentNodeId);
         model.addAttribute("parent", parentNode);
-        if (!model.containsAttribute("element")) {
-            model.addAttribute("element", new WBSElement());
-        }
-        return "wbs/form";
+        model.addAttribute("element", new WBSElement());
+        return "wbs/addForm";
     }
 
     //add a child to a node and redirect to the tree
@@ -92,17 +93,24 @@ public class WBSController {
     @RequestMapping("/wbs/element/{nodeId}/edit")
     public String editElementForm(@PathVariable Long nodeId, Model model) {
         WBSNode node = wbsNodeService.findbyId(nodeId);
-        WBSElement element = node.getElement();
-        model.addAttribute("node", node);
-        model.addAttribute("element", element);
-        return "wbs/edit";
+            model.addAttribute("node", node);
+        if (node.getElement() instanceof StandardWBSElement) {
+            StandardWBSElement element = (StandardWBSElement) node.getElement();
+            model.addAttribute("element", element);
+        } else if (node.getElement() instanceof WorkPackage) {
+            WorkPackage element = (WorkPackage) node.getElement();
+            model.addAttribute("element", element);
+        } else {
+            throw new InvalidObjectException("WBS Element object is invalid");
+        }
+        return "wbs/editForm";
     }
 
     //Edit an existing element
     //TODO: this doesn't work if element is a subtype of WBSElement (can I deal with that in the service layer?)
 
     @RequestMapping(value = "wbs/element/{nodeId}", method = RequestMethod.POST)
-    public String editElement(WBSElement element, @PathVariable Long nodeId) {
+    public String editElement(@ModelAttribute("element") WBSElement element, @PathVariable Long nodeId) {
 
         wbsElementService.edit(element);
 

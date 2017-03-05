@@ -9,7 +9,7 @@
     </div>
     <hr />
     <div class="container">
-        <p>element properties come here</p>
+        <p th:text="${element.description}"></p>
         <a class="btn btn-default" th:href="@{|/wbs/element/${node.id}/edit|}">
             <span class="glyphicon glyphicon-pencil"></span>
         </a>
