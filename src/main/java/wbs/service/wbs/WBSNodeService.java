@@ -14,5 +14,4 @@ public interface WBSNodeService {
     WBSNode create(WBSNode node);
     WBSNode edit(WBSNode node);
     void deleteById(Long id);
-    void delete(WBSNode node);
 }

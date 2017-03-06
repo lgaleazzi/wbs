@@ -46,8 +46,4 @@ public class WBSNodeServiceImpl implements WBSNodeService {
         wbsNodeRepository.delete(id);
     }
 
-    @Override
-    public void delete(WBSNode node) {
-        wbsNodeRepository.delete(node);
-    }
 }

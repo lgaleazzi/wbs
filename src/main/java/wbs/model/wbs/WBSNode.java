@@ -24,7 +24,7 @@ public class WBSNode {
     @JoinColumn(name="parent_id")
     private WBSNode parent;
 
-    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    @OneToMany(mappedBy = "parent", orphanRemoval = true, cascade = CascadeType.REMOVE)
     private List<WBSNode> children;
 
     @OneToOne(cascade = CascadeType.ALL)

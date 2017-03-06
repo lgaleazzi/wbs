@@ -75,17 +75,13 @@ public class WBSController {
     }
 
     //TODO: implement deleting children if node is not a leaf
-    //deleting node and redirecting to the tree if the node has no children
+    //deleting node and redirecting to the tree
     @RequestMapping(value = "wbs/element/{nodeId}/delete", method = RequestMethod.POST)
     public String deleteElement(@PathVariable Long nodeId) {
         WBSNode node = wbsNodeService.findbyId(nodeId);
         Long treeId = node.getTree().getId();
-        if (node.isLeaf()) {
-            wbsNodeService.delete(node);
-            return "redirect:/wbs/"+treeId;
-        }
-
-        return "redirect:/wbs/element/"+nodeId;
+        wbsNodeService.deleteById(nodeId);
+        return "redirect:/wbs/"+treeId;
     }
 
 
