@@ -65,76 +65,6 @@ public class WBSNode {
         return list;
     }
 
-    //Methods to add children to this node
-
-    //add a single child at the end of the list
-    public void addChild(WBSNode child) {
-        if (children == null) {
-            children = new LinkedList<WBSNode>();
-        }
-        children.add(child);
-        child.setParent(this);
-        child.setTree(tree);
-    }
-
-    //add a list of children at the end of the list
-    //order in the input list will be retained
-    public void addChildren(List<WBSNode> children) {
-        if (children == null) {
-            children = new LinkedList<WBSNode>();
-        }
-        for (WBSNode child : children) {
-            addChild(child);
-        }
-    }
-
-    //add a child at a specific index
-    public void addChildAtIndex(int index, WBSNode child) {
-        if (children == null) {
-            children = new LinkedList<WBSNode>();
-        }
-        children.add(index, child);
-        child.setParent(this);
-        child.setTree(tree);
-    }
-
-
-    //Methods to remove children from this node
-
-    //child is removed from the parent's children list and its parent value set to null
-    //Subtree is removed together with the child
-    public void removeChildAndSubtree(WBSNode child) {
-        if (!children.contains(child)) {
-            throw new IllegalArgumentException("Not a child of this node.");
-        }
-        children.remove(child);
-        child.setParent(null);
-    }
-
-    //Removes all children from this node. Subtree of children is also removed.
-    public void removeAllChildren() {
-        Iterator<WBSNode> iterator = children.iterator();
-        while (iterator.hasNext()) {
-            WBSNode child = iterator.next();
-            iterator.remove();
-            child.setParent(null);
-        }
-    }
-
-
-    //Methods to remove this node from its parent
-
-    public void removeParent() {
-        parent.removeChildAndSubtree(this);
-    }
-
-    public void moveToNewParent(WBSNode newParent) {
-        parent.removeChildAndSubtree(this);
-        newParent.addChild(this);
-    }
-
-
-    //Methods to check node properties and position in the tree incl. getters
 
     public void setTree(WBSTree tree) {
         this.tree = tree;
@@ -187,8 +117,6 @@ public class WBSNode {
         this.id = id;
     }
 
-
-
     public WBSElement getElement() {
         return element;
     }
@@ -209,26 +137,7 @@ public class WBSNode {
         return tree;
     }
 
-
-    //Print and toString
-
-    @Override
-    public String toString() {
-        return "WBSTree: "+ breakdownId + ", Level: "+ this.getLevel() + ", " +element.toString();
-    }
-
-    public void printSubTree(WBSNode node) {
-        System.out.println("|" + node);
-        for (WBSNode childNode : node.getChildren()) {
-            printSubTree(childNode);
-        }
-    }
-
     public boolean acceptsChildren() {
         return element.acceptsChildren();
     }
-
-
-
-
 }

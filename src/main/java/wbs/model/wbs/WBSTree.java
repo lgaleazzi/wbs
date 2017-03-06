@@ -57,14 +57,12 @@ public class WBSTree {
     }
 
     //converts tree to linked list
-    //TODO: test
     public List<WBSNode> toList() {
         List<WBSNode> list = root.toList();
         return list;
     }
 
     //calculates tree depth
-    //TODO: test
     public int depth() {
         int maxDepth = root.getLevel();
         List<WBSNode> nodeList = toList();
@@ -96,14 +94,5 @@ public class WBSTree {
                 }
             }
         }
-    }
-
-    public void printTree() {
-        root.printSubTree(root);
-    }
-
-    @Override
-    public String toString() {
-        return "Tree: " + toList().toString();
     }
 }
