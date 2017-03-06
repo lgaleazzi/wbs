@@ -11,4 +11,9 @@ import javax.persistence.Entity;
 public class StandardWBSElement extends WBSElement {
 
     public StandardWBSElement() {}
+
+    @Override
+    public boolean acceptsChildren() {
+        return true;
+    }
 }

@@ -54,12 +54,13 @@ public class WBSController {
         return "wbs/details";
     }
 
+    //TODO: Handle work packages
     //form for adding a child to a node
     @RequestMapping("/wbs/add/{parentNodeId}")
-    public String addChildForm(@PathVariable Long parentNodeId, Model model) {
+    public String addStandardElementForm(@PathVariable Long parentNodeId, Model model) {
         WBSNode parentNode = wbsNodeService.findbyId(parentNodeId);
         model.addAttribute("parent", parentNode);
-        model.addAttribute("element", new WBSElement());
+        model.addAttribute("element", new StandardWBSElement());
         return "wbs/addForm";
     }
 

@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Element_Type")
-public class WBSElement {
+public abstract class WBSElement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,4 +43,6 @@ public class WBSElement {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public abstract boolean acceptsChildren();
 }

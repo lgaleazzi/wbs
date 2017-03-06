@@ -9,4 +9,9 @@ import javax.persistence.Entity;
 public class WorkPackage extends WBSElement {
 
     public WorkPackage() {}
+
+    @Override
+    public boolean acceptsChildren() {
+        return false;
+    }
 }

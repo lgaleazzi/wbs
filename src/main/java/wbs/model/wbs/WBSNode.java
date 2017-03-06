@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
+/*
  * Container of WBSElement for tree structure
  */
 
@@ -222,6 +222,10 @@ public class WBSNode {
         for (WBSNode childNode : node.getChildren()) {
             printSubTree(childNode);
         }
+    }
+
+    public boolean acceptsChildren() {
+        return element.acceptsChildren();
     }
 
 
