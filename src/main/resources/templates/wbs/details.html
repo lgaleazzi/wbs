@@ -12,6 +12,9 @@
         <div class="row">
             <p th:text="${element.description}"></p>
         </div>
+    </div>
+    <hr />
+    <div class="container">
         <div class="row">
             <div class="col-xs-1">
                 <a class="btn btn-default" th:href="@{|/wbs/element/${node.id}/edit|}">
@@ -27,6 +30,7 @@
             </div>
         </div>
     </div>
+    <hr />
     <div class="container">
         <div class="container" th:if="${node.hasParent()}">
             <h3>Parent Element</h3>
