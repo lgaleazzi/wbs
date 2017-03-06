@@ -10,13 +10,25 @@
     </div>
     <hr />
     <div class="container">
-        <a class="btn btn-default" th:href="@{|/wbs/${project.wbsTree.id}|}">Open WBS</a>
-        <a class="btn btn-default" th:href="@{|/projects/${project.id}/edit|}">Edit Project</a>
-        <form th:action="@{|/projects/${project.id}/delete|}" method="post">
-            <button class="btn btn-default" type="submit">
-                <span class="glyphicon glyphicon-trash"></span>
-            </button>
-        </form>
+        <div class="row">
+            <div class="col-xs-1">
+                <a class="btn btn-default" th:href="@{|/projects/${project.id}/edit|}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            </div>
+            <div class="col-xs-1">
+                <a class="btn btn-default" th:href="@{|/wbs/${project.wbsTree.id}|}">
+                    <span class="glyphicon glyphicon-blackboard"></span>
+                </a>
+            </div>
+            <div class="col-xs-1">
+                <form th:action="@{|/projects/${project.id}/delete|}" method="post">
+                    <button class="btn btn-default" type="submit">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </main>
 
