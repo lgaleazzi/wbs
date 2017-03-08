@@ -1,7 +1,5 @@
 package wbs.web.controller;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
-import com.sun.xml.internal.bind.api.impl.NameConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,15 +9,12 @@ import wbs.model.wbs.WBSTree;
 import wbs.model.wbs.elements.StandardWBSElement;
 import wbs.model.wbs.elements.WBSElement;
 import wbs.model.wbs.elements.WorkPackage;
-import wbs.service.InvalidObjectException;
-import wbs.service.ObjectNotFoundException;
+import wbs.exceptions.InvalidObjectException;
 import wbs.service.wbs.WBSNodeService;
 import wbs.service.wbs.WBSTreeService;
 import wbs.service.wbs.elements.WBSElementService;
 
-/**
- * Created by livia on 16.01.17.
- */
+//TODO: implement data validation for WBS elements
 
 @Controller
 @SessionAttributes({"element"})
@@ -55,7 +50,7 @@ public class WBSController {
     }
 
     //TODO: Handle work packages
-    //form for adding a child to a node
+    //form for adding a StandardWBSElement
     @RequestMapping("/wbs/add/{parentNodeId}")
     public String addStandardElementForm(@PathVariable Long parentNodeId, Model model) {
         WBSNode parentNode = wbsNodeService.findbyId(parentNodeId);
@@ -64,8 +59,7 @@ public class WBSController {
         return "wbs/addForm";
     }
 
-    //add a child to a node and redirect to the tree
-    //TODO: get some of this code out of the controller?
+    //add a child StandardWBSElement to a node and redirect to the tree
     @RequestMapping(value = "/wbs/add/{parentNodeId}",method = RequestMethod.POST)
     public String addChild(StandardWBSElement wbsElement, @PathVariable Long parentNodeId, Model model) {
         WBSNode parentNode = wbsNodeService.findbyId(parentNodeId);
@@ -75,7 +69,6 @@ public class WBSController {
         return "redirect:/wbs/"+parentNode.getTree().getId();
     }
 
-    //TODO: implement deleting children if node is not a leaf
     //deleting node and redirecting to the tree
     @RequestMapping(value = "wbs/element/{nodeId}/delete", method = RequestMethod.POST)
     public String deleteElement(@PathVariable Long nodeId) {
@@ -103,11 +96,9 @@ public class WBSController {
         return "wbs/editForm";
     }
 
-    //Edit an existing element
-    //TODO: this doesn't work if element is a subtype of WBSElement (can I deal with that in the service layer?)
-
+    //Edit a StandardWBSElement
     @RequestMapping(value = "wbs/element/{nodeId}", method = RequestMethod.POST)
-    public String editElement(@ModelAttribute("element") WBSElement element, @PathVariable Long nodeId) {
+    public String editStandardWBSElement(@ModelAttribute("element") StandardWBSElement element, @PathVariable Long nodeId) {
 
         wbsElementService.edit(element);
 

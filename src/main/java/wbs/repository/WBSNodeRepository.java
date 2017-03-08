@@ -7,6 +7,6 @@ import wbs.model.wbs.WBSNode;
 
 @Repository
 public interface WBSNodeRepository extends JpaRepository<WBSNode, Long> {
-
+    //TODO: restrict access to authorized users
 
 }

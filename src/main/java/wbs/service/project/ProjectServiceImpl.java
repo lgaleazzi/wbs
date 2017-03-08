@@ -1,13 +1,12 @@
 package wbs.service.project;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import wbs.model.wbs.elements.WBSElement;
 import wbs.repository.ProjectRepository;
 import wbs.model.project.Project;
-import wbs.service.ObjectNotFoundException;
-import wbs.service.UnauthorizedException;
+import wbs.exceptions.ObjectNotFoundException;
+import wbs.exceptions.UnauthorizedException;
 import wbs.service.wbs.WBSNodeService;
 import wbs.service.wbs.WBSTreeService;
 import wbs.service.wbs.elements.WBSElementService;

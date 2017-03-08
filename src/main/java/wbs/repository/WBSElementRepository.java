@@ -6,5 +6,6 @@ import wbs.model.wbs.elements.WBSElement;
 
 @Repository
 public interface WBSElementRepository extends JpaRepository<WBSElement, Long> {
+    //TODO: restrict access to authorized users
 
 }
