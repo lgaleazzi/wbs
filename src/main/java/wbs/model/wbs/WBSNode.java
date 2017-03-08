@@ -8,10 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /*
- * Container of WBSElement for tree structure
+ Container of WBSElement for tree structure
  */
 
-//TODO: check getters and setters
 
 @Entity
 @Table(name="node")

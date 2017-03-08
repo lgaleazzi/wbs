@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import wbs.service.authentication.UserService;
 import wbs.web.FlashMessage;
 
+//Spring security configuration
 
 @Configuration
 @EnableWebSecurity
@@ -30,11 +31,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService);
     }
 
+    //Files in the public folder do not require authentication
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/public/**");
     }
 
+    //All requests require the user is logged in with the role "USER"
+    // with the exception of the login page
+    //logging out redirects to the login page
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -52,10 +57,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login");
     }
 
+    //If login is successfull, redirect to home page
     public AuthenticationSuccessHandler loginSuccessHandler() {
         return (request, response, auth) -> response.sendRedirect("/");
     }
 
+    //If login fails, redirect to login page with error message
     public AuthenticationFailureHandler loginFailureHandler() {
         return (request, response, exception) -> {
             request.getSession().setAttribute("flash", new FlashMessage("Incorrect username and/or password. Please try again.", FlashMessage.Status.DANGER));

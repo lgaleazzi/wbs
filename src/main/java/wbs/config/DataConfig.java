@@ -13,6 +13,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+//Hibernate and dtabase configuration
 
 @Configuration
 @EnableJpaRepositories(basePackages = "wbs.repository")

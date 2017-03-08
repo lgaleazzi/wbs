@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+//Each project contains one WBS tree holding the project's work breakdown structure
+
 @Entity
 @Table(name="projects")
 public class Project {

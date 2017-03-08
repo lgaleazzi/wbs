@@ -18,7 +18,7 @@ public class LoginController {
             Object flash = request.getSession().getAttribute("flash");
             model.addAttribute("flash", flash);
         } catch (Exception e) {
-
+            //if no flash attribute present, don't do anything
         }
         return "login";
     }

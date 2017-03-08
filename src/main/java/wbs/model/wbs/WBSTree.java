@@ -1,6 +1,6 @@
 package wbs.model.wbs;
 
-
+//The WBS tree holds the root node of the tree structure
 
 import wbs.model.wbs.elements.StandardWBSElement;
 
