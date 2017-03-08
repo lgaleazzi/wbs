@@ -83,7 +83,8 @@ public class WBSController {
     @RequestMapping("/wbs/element/{nodeId}/edit")
     public String editElementForm(@PathVariable Long nodeId, Model model) {
         WBSNode node = wbsNodeService.findbyId(nodeId);
-            model.addAttribute("node", node);
+        model.addAttribute("node", node);
+
         if (node.getElement() instanceof StandardWBSElement) {
             StandardWBSElement element = (StandardWBSElement) node.getElement();
             model.addAttribute("element", element);
@@ -93,15 +94,22 @@ public class WBSController {
         } else {
             throw new InvalidObjectException("WBS Element object is invalid");
         }
+
         return "wbs/editForm";
     }
 
     //Edit a StandardWBSElement
     @RequestMapping(value = "wbs/element/{nodeId}", method = RequestMethod.POST)
     public String editStandardWBSElement(@ModelAttribute("element") StandardWBSElement element, @PathVariable Long nodeId) {
-
         wbsElementService.edit(element);
+        return "redirect:/wbs/element/"+nodeId;
+    }
 
+    //TODO: add mapped URL to edit form
+    //Edit a WorkPackage
+    @RequestMapping(value = "wbs/wp_element/{nodeId}", method = RequestMethod.POST)
+    public String editWorkPackage(@ModelAttribute("element") WorkPackage workPackage, @PathVariable Long nodeId) {
+        wbsElementService.edit(workPackage);
         return "redirect:/wbs/element/"+nodeId;
     }
 }
