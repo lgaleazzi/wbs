@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +26,9 @@ public class User implements UserDetails {
     @Column
     private String email;
 
+    //TODO: add password encoder
     @Column
+    @NotNull
     private String password;
 
     @Column(nullable = false)

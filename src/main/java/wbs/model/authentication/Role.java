@@ -2,9 +2,6 @@ package wbs.model.authentication;
 
 import javax.persistence.*;
 
-/**
- * Created by livia on 06.02.17.
- */
 @Entity
 @Table(name = "role")
 public class Role {

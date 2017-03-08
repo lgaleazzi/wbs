@@ -1,6 +1,8 @@
 package wbs.model.wbs.elements;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -12,9 +14,12 @@ public abstract class WBSElement {
     private Long id;
 
     @Column
+    @NotNull
+    @Size(min = 1, max = 30)
     private String name;
 
     @Column
+    @Size(max = 2000)
     private String description;
 
     public WBSElement() {}
