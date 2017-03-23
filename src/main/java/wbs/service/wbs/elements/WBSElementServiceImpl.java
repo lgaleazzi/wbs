@@ -7,8 +7,6 @@ import wbs.model.wbs.elements.WBSElement;
 
 import java.util.List;
 
-//TODO: one implementation per element type? in this case will have to instantiate rather than autowire, is that bad?
-
 @Service
 public class WBSElementServiceImpl implements WBSElementService {
     @Autowired

@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Element_Type")
 public abstract class WBSElement {
+    private static final String DEFAULT_NAME = "element";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +22,22 @@ public abstract class WBSElement {
     @Column
     @Size(max = 2000)
     private String description;
+
+    @PrePersist
+    public void prePersist() {
+        setNameToDefaultIfEmpty();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        setNameToDefaultIfEmpty();
+    }
+
+    private void setNameToDefaultIfEmpty() {
+        if (this.getName() == null || this.getName().isEmpty()) {
+            this.setName(DEFAULT_NAME);
+        }
+    }
 
     public WBSElement() {}
 
