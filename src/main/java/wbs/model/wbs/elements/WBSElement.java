@@ -1,7 +1,6 @@
 package wbs.model.wbs.elements;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 //abstract class for all elements in the WBS tree
@@ -16,8 +15,7 @@ public abstract class WBSElement {
     private Long id;
 
     @Column
-    @NotNull
-    @Size(min = 1, max = 30)
+    @Size(max = 30)
     private String name;
 
     @Column
