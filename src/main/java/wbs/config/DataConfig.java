@@ -13,11 +13,11 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-//Hibernate and dtabase configuration
+//Hibernate and database configuration
 
 @Configuration
 @EnableJpaRepositories(basePackages = "wbs.repository")
-@PropertySource("application.properties")
+@PropertySource("application-h2.properties")
 public class DataConfig {
     @Autowired
     private Environment env;
