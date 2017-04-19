@@ -46,9 +46,14 @@ public class ProjectController {
     @RequestMapping("/projects/{projId}/edit")
     public String formEditProject(@PathVariable Long projId, Model model) {
         Project project = projectService.findbyId(projId);
-        if (!model.containsAttribute("project")) {
+
+        //repopulate form data in case of errors, otherwise populate current project data
+        if (model.containsAttribute("repopulateProject")) {
+            model.addAttribute("project", model.asMap().get("repopulateProject"));
+        } else {
             model.addAttribute("project", project);
         }
+
         model.addAttribute("action", String.format("/projects/%s", projId));
         model.addAttribute("heading", String.format("Edit project '%s'", project.getName()));
         return "/project/form";
@@ -57,7 +62,11 @@ public class ProjectController {
     //form to add a project
     @RequestMapping("/projects/add")
     public String formAddProject(Model model) {
-        if (!model.containsAttribute("project")) {
+
+        //repopulate form data in case of errors, otherwise add new project
+        if (model.containsAttribute("repopulateProject")) {
+            model.addAttribute("project", model.asMap().get("repopulateProject"));
+        } else {
             model.addAttribute("project", new Project());
         }
         model.addAttribute("action", "/");
@@ -72,7 +81,7 @@ public class ProjectController {
         //if errors exist, add errors to model on redirect, and add project back to repopulate form data
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
-            redirectAttributes.addFlashAttribute("project", project);
+            redirectAttributes.addFlashAttribute("repopulateProject", project);
             return String.format("redirect:/projects/%s/edit", project.getId());
         }
 
@@ -88,7 +97,7 @@ public class ProjectController {
         //if errors exist, add errors to model on redirect, and add project back to repopulate form data
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
-            redirectAttributes.addFlashAttribute("project", project);
+            redirectAttributes.addFlashAttribute("repopulateProject", project);
             return String.format("redirect:/projects/add");
         }
 
