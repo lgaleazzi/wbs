@@ -97,7 +97,7 @@ public class ProjectController {
         //if errors exist, add errors to model on redirect, and add project back to repopulate form data
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
-            redirectAttributes.addFlashAttribute("repopulateProject", project);
+            redirectAttributes.addFlashAttribute("project", project);
             return String.format("redirect:/projects/add");
         }
 

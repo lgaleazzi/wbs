@@ -5,29 +5,16 @@
 <header th:replace="layout :: site-header"></header>
 <main>
     <div class="container">
-        <h2 th:text="${element.name}"></h2>
-    </div>
-    <hr />
-    <div class="container">
         <div class="row">
-            <p th:text="${element.description}"></p>
+                <p>
+                    <h2 th:text="${element.name}"></h2>
+                </p>
         </div>
     </div>
     <hr />
     <div class="container">
         <div class="row">
-            <div class="col-xs-1">
-                <a class="btn btn-default" th:href="@{|/wbs/element/${node.id}/edit|}">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </a>
-            </div>
-            <div class="col-xs-1">
-                <form th:action="@{|/wbs/element/${node.id}/delete|}" method="post">
-                    <button class="btn btn-default" type="submit">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </button>
-                </form>
-            </div>
+            <p th:text="${element.description}"></p>
         </div>
     </div>
     <hr />
@@ -45,6 +32,23 @@
                     <a th:href="@{|/wbs/element/${child.id}|}" th:text="${child.element.name}"></a>
                 </li>
             </ul>
+        </div>
+    </div>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-1">
+                <a class="btn btn-default" th:href="@{|/wbs/element/${node.id}/edit|}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+            </div>
+            <div class="col-xs-1">
+                <form th:action="@{|/wbs/element/${node.id}/delete|}" method="post">
+                    <button class="btn btn-default" type="submit">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </main>

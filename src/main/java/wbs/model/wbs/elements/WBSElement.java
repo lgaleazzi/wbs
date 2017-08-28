@@ -16,7 +16,7 @@ public abstract class WBSElement {
     private Long id;
 
     @Column
-    @Size(max = 30)
+    @Size(max = 60)
     private String name;
 
     @Column

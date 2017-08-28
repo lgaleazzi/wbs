@@ -19,7 +19,7 @@ public class Project {
 
     @Column
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 60)
     private String name;
 
     @Column
