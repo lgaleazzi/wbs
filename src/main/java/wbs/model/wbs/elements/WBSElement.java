@@ -23,6 +23,26 @@ public abstract class WBSElement {
     @Size(max = 2000)
     private String description;
 
+    //enum listing the subclasses of WBSElement
+    public enum ElementType {
+        StandardWBSElement("Standard"), WorkPackage("Work package");
+
+        private String name;
+
+        ElementType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    //this column is managed by the inheritance relationship
+    @Column(name = "Element_Type", insertable = false, updatable = false)
+    @Enumerated(EnumType.STRING)
+    private ElementType elementType;
+
     @PrePersist
     public void prePersist() {
         setNameToDefaultIfEmpty();
@@ -64,6 +84,10 @@ public abstract class WBSElement {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ElementType getElementType() {
+        return elementType;
     }
 
     public abstract boolean acceptsChildren();
