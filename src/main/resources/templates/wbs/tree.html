@@ -25,8 +25,8 @@
                         <ul th:if="${!root.isLeaf()}">
                             <li th:each="child : ${root.children}" >
                                 <div >
-                                    <a class="btn btn-default" th:href="@{|/wbs/element/${child.id}|}" th:text="${child.element.name}"></a>
-                                    <a class="badge" th:href="@{|/wbs/add/${child.id}|}">+</a>
+                                    <a class="btn" th:classappend="${child.acceptsChildren()} ? 'btn-default' : 'btn-info'" th:href="@{|/wbs/element/${child.id}|}" th:text="${child.element.name}"></a>
+                                    <a th:if="${child.acceptsChildren()}" class="badge" th:href="@{|/wbs/add/${child.id}|}">+</a>
                                     <div th:with="root = ${child}"
                                          th:include="this :: node" th:remove="tag" />
                                 </div>
