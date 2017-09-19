@@ -3,12 +3,12 @@ package wbs.model.wbs.elements;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
-//abstract class for all elements in the WBS tree
+//parent class for all elements in the WBS tree
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Element_Type")
-public abstract class WBSElement {
+public class WBSElement {
     private static final String DEFAULT_NAME = "element";
 
     @Id
@@ -38,7 +38,7 @@ public abstract class WBSElement {
         }
     }
 
-    //this column is managed by the inheritance relationship
+    //this column is managed automatically (inheritance relationship)
     @Column(name = "Element_Type", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private ElementType elementType;
@@ -90,5 +90,21 @@ public abstract class WBSElement {
         return elementType;
     }
 
-    public abstract boolean acceptsChildren();
+    public void setElementType(ElementType elementType) {
+        this.elementType = elementType;
+    }
+
+    public boolean acceptsChildren() {
+        return true;
+    };
+
+    @Override
+    public String toString() {
+        return "WBSElement{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", elementType=" + elementType +
+                '}';
+    }
 }

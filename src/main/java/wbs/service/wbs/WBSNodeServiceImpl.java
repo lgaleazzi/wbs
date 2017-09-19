@@ -9,9 +9,6 @@ import wbs.service.wbs.elements.WBSElementService;
 
 import java.util.List;
 
-/**
- * Created by livia on 09.01.17.
- */
 @Service
 public class WBSNodeServiceImpl implements WBSNodeService {
     @Autowired
@@ -34,6 +31,13 @@ public class WBSNodeServiceImpl implements WBSNodeService {
     @Override
     public WBSNode create(WBSNode node) {
         return wbsNodeRepository.save(node);
+    }
+
+    @Override
+    public WBSNode createFromParentNode(WBSElement wbsElement, WBSNode parentNode) {
+        WBSNode newNode = new WBSNode(wbsElement, parentNode);
+        newNode.setTree(parentNode.getTree());
+        return create(newNode);
     }
 
     @Override

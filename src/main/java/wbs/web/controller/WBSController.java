@@ -1,5 +1,6 @@
 package wbs.web.controller;
 
+import com.sun.xml.internal.ws.api.pipe.FiberContextSwitchInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,12 @@ import wbs.exceptions.InvalidObjectException;
 import wbs.service.wbs.WBSNodeService;
 import wbs.service.wbs.WBSTreeService;
 import wbs.service.wbs.elements.WBSElementService;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static wbs.web.WBSElementConverter.convertWBSElementToStandard;
+import static wbs.web.WBSElementConverter.convertWBSElementToWorkPackage;
 
 //TODO: implement data validation for WBS elements
 
@@ -28,6 +35,12 @@ public class WBSController {
 
     @Autowired
     WBSElementService wbsElementService;
+
+    @ModelAttribute("elementTypes")
+    public List<WBSElement.ElementType> populateElementTypes() {
+        return Arrays.asList(WBSElement.ElementType.values());
+    }
+
 
     //view WBS tree
     @RequestMapping("/wbs/{wbsId}")
@@ -55,17 +68,27 @@ public class WBSController {
     public String addStandardElementForm(@PathVariable Long parentNodeId, Model model) {
         WBSNode parentNode = wbsNodeService.findbyId(parentNodeId);
         model.addAttribute("parent", parentNode);
-        model.addAttribute("element", new StandardWBSElement());
+        WBSElement element = new WBSElement();
+        model.addAttribute("element", element);
         return "wbs/addForm";
     }
 
-    //add a child StandardWBSElement to a node and redirect to the tree
+    //add a child WBSElement to a node and redirect to the tree
     @RequestMapping(value = "/wbs/add/{parentNodeId}",method = RequestMethod.POST)
-    public String addChild(StandardWBSElement wbsElement, @PathVariable Long parentNodeId, Model model) {
+    public String addChild(WBSElement wbsElement, @PathVariable Long parentNodeId, Model model) {
         WBSNode parentNode = wbsNodeService.findbyId(parentNodeId);
-        WBSNode newNode = new WBSNode(wbsElement, parentNode);
-        newNode.setTree(parentNode.getTree());
-        wbsNodeService.create(newNode);
+
+        //if user entered elementType = work package, convert the element to type WorkPackage and create it
+        if (wbsElement.getElementType() == WBSElement.ElementType.WorkPackage) {
+            WorkPackage workPackage = convertWBSElementToWorkPackage(wbsElement);
+            wbsNodeService.createFromParentNode(workPackage, parentNode);
+        }
+        //if user entered elementType = standard, convert the element to type StandardWBSElement and create it
+        else if(wbsElement.getElementType() == WBSElement.ElementType.StandardWBSElement) {
+            StandardWBSElement standardWBSElement = convertWBSElementToStandard(wbsElement);
+            wbsNodeService.createFromParentNode(standardWBSElement, parentNode);
+        }
+
         return "redirect:/wbs/"+parentNode.getTree().getId();
     }
 
@@ -85,10 +108,10 @@ public class WBSController {
         WBSNode node = wbsNodeService.findbyId(nodeId);
         model.addAttribute("node", node);
 
-        if (node.getElement() instanceof StandardWBSElement) {
+        if (node.getElement().getElementType() == WBSElement.ElementType.StandardWBSElement) {
             StandardWBSElement element = (StandardWBSElement) node.getElement();
             model.addAttribute("element", element);
-        } else if (node.getElement() instanceof WorkPackage) {
+        } else if (node.getElement().getElementType() == WBSElement.ElementType.WorkPackage) {
             WorkPackage element = (WorkPackage) node.getElement();
             model.addAttribute("element", element);
         } else {
