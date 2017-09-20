@@ -6,7 +6,7 @@
 <main>
     <div class="container">
         <h2>Edit element</h2>
-        <form th:action="@{|/wbs/element/${node.id}|}" method="post" th:object="${element}">
+        <form th:action="${element.elementType.name} == 'Standard' ? @{|/wbs/element/${node.id}|} : @{|/wbs/wp_element/${node.id}|}" method="post" th:object="${element}">
             <div class="row">
                 <div class="col-md-12">
                     <input type="hidden" th:field="*{id}" />
