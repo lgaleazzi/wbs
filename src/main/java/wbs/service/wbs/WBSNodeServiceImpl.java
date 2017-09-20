@@ -2,6 +2,7 @@ package wbs.service.wbs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import wbs.exceptions.InvalidParentNodeException;
 import wbs.model.wbs.elements.WBSElement;
 import wbs.repository.WBSNodeRepository;
 import wbs.model.wbs.WBSNode;
@@ -30,6 +31,9 @@ public class WBSNodeServiceImpl implements WBSNodeService {
 
     @Override
     public WBSNode create(WBSNode node) {
+        if(node.hasParent() && !node.getParent().acceptsChildren()) {
+            throw new InvalidParentNodeException("Parent node does not accept children");
+        }
         return wbsNodeRepository.save(node);
     }
 
@@ -42,6 +46,9 @@ public class WBSNodeServiceImpl implements WBSNodeService {
 
     @Override
     public WBSNode edit(WBSNode node) {
+        if(node.hasParent() && !node.getParent().acceptsChildren()) {
+            throw new InvalidParentNodeException("Parent node does not accept children");
+        }
         return wbsNodeRepository.save(node);
     }
 
