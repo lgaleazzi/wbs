@@ -8,6 +8,7 @@ import wbs.repository.WBSNodeRepository;
 import wbs.model.wbs.WBSNode;
 import wbs.service.wbs.elements.WBSElementService;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -56,5 +57,4 @@ public class WBSNodeServiceImpl implements WBSNodeService {
     public void deleteById(Long id) {
         wbsNodeRepository.delete(id);
     }
-
 }

@@ -62,8 +62,7 @@ public class WBSController {
         return "wbs/details";
     }
 
-    //TODO: Handle work packages
-    //form for adding a StandardWBSElement
+    //form for adding a WBSElement
     @RequestMapping("/wbs/add/{parentNodeId}")
     public String addStandardElementForm(@PathVariable Long parentNodeId, Model model) {
         WBSNode parentNode = wbsNodeService.findbyId(parentNodeId);
@@ -92,7 +91,7 @@ public class WBSController {
         return "redirect:/wbs/"+parentNode.getTree().getId();
     }
 
-    //deleting node and redirecting to the tree
+    //deleting node with subtree and redirecting to the tree
     @RequestMapping(value = "wbs/element/{nodeId}/delete", method = RequestMethod.POST)
     public String deleteElement(@PathVariable Long nodeId) {
         WBSNode node = wbsNodeService.findbyId(nodeId);
@@ -128,7 +127,6 @@ public class WBSController {
         return "redirect:/wbs/element/"+nodeId;
     }
 
-    //TODO: add mapped URL to edit form
     //Edit a WorkPackage
     @RequestMapping(value = "wbs/wp_element/{nodeId}", method = RequestMethod.POST)
     public String editWorkPackage(@ModelAttribute("element") WorkPackage workPackage, @PathVariable Long nodeId) {
