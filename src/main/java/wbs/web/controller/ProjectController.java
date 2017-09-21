@@ -26,7 +26,7 @@ public class ProjectController {
     @Autowired
     private UserService userService;
 
-    //view all projects
+    //view all projects for current user
     @RequestMapping("/")
     public String listProjects(Model model) {
         List<Project> allProjects = projectService.findAllForCurrentUser();
@@ -81,6 +81,7 @@ public class ProjectController {
         //if errors exist, add errors to model on redirect, and add project back to repopulate form data
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Please check form data", FlashMessage.Status.DANGER));
             redirectAttributes.addFlashAttribute("repopulateProject", project);
             return String.format("redirect:/projects/%s/edit", project.getId());
         }
@@ -97,7 +98,7 @@ public class ProjectController {
         //if errors exist, add errors to model on redirect, and add project back to repopulate form data
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.project", result);
-            redirectAttributes.addFlashAttribute("project", project);
+            redirectAttributes.addFlashAttribute("repopulateProject", project);
             return String.format("redirect:/projects/add");
         }
 

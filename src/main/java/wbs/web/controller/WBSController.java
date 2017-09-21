@@ -4,7 +4,9 @@ import com.sun.xml.internal.ws.api.pipe.FiberContextSwitchInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import wbs.model.wbs.WBSNode;
 import wbs.model.wbs.WBSTree;
 import wbs.model.wbs.elements.StandardWBSElement;
@@ -14,7 +16,9 @@ import wbs.exceptions.InvalidObjectException;
 import wbs.service.wbs.WBSNodeService;
 import wbs.service.wbs.WBSTreeService;
 import wbs.service.wbs.elements.WBSElementService;
+import wbs.web.FlashMessage;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,16 +71,32 @@ public class WBSController {
     public String addStandardElementForm(@PathVariable Long parentNodeId, Model model) {
         WBSNode parentNode = wbsNodeService.findbyId(parentNodeId);
         model.addAttribute("parent", parentNode);
-        WBSElement element = new WBSElement();
-        model.addAttribute("element", element);
+
+        //repopulate form data in case of errors, otherwise add new element
+        if (model.containsAttribute("repopulateElement")) {
+            model.addAttribute("element", model.asMap().get("repopulateElement"));
+        } else {
+            WBSElement element = new WBSElement();
+            model.addAttribute("element", element);
+        }
+
         return "wbs/addForm";
     }
 
     //add a child WBSElement to a node and redirect to the tree
     @RequestMapping(value = "/wbs/add/{parentNodeId}",method = RequestMethod.POST)
-    public String addChild(WBSElement wbsElement, @PathVariable Long parentNodeId, Model model) {
+    public String addChild(@ModelAttribute("element") @Valid WBSElement wbsElement, BindingResult result, RedirectAttributes redirectAttributes, @PathVariable Long parentNodeId) {
         WBSNode parentNode = wbsNodeService.findbyId(parentNodeId);
 
+        //if errors exist, add errors to model on redirect, and add project back to repopulate form data
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.element", result);
+            redirectAttributes.addFlashAttribute("flash", new FlashMessage("Please check form data", FlashMessage.Status.DANGER));
+            redirectAttributes.addFlashAttribute("repopulateElement", wbsElement);
+            return "redirect:/wbs/add/"+parentNodeId;
+        }
+
+        //if no errors, find out element type and create it
         //if user entered elementType = work package, convert the element to type WorkPackage and create it
         if (wbsElement.getElementType() == WBSElement.ElementType.WorkPackage) {
             WorkPackage workPackage = convertWBSElementToWorkPackage(wbsElement);
@@ -87,6 +107,8 @@ public class WBSController {
             StandardWBSElement standardWBSElement = convertWBSElementToStandard(wbsElement);
             wbsNodeService.createFromParentNode(standardWBSElement, parentNode);
         }
+
+        redirectAttributes.addFlashAttribute("flash", new FlashMessage("Element created", FlashMessage.Status.SUCCESS));
 
         return "redirect:/wbs/"+parentNode.getTree().getId();
     }
