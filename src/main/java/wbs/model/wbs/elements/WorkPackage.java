@@ -10,7 +10,8 @@ import javax.persistence.Entity;
 @DiscriminatorValue("WorkPackage")
 public class WorkPackage extends WBSElement {
 
-    public WorkPackage() {}
+    public WorkPackage() {
+    }
 
     @Override
     public boolean acceptsChildren() {

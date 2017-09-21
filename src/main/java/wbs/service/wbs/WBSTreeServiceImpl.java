@@ -2,9 +2,8 @@ package wbs.service.wbs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wbs.exceptions.InvalidObjectException;
-import wbs.repository.WBSTreeRepository;
 import wbs.model.wbs.WBSTree;
+import wbs.repository.WBSTreeRepository;
 
 import java.util.List;
 
@@ -27,8 +26,6 @@ public class WBSTreeServiceImpl implements WBSTreeService {
     public WBSTree findbyId(Long id) {
         return wbsTreeRepository.findOne(id);
     }
-
-    //TODO: find by project
 
     @Override
     public WBSTree create(WBSTree tree) {

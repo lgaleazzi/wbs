@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import wbs.model.authentication.User;
 import wbs.repository.UserRepository;
 
-/**
- * Created by livia on 05.02.17.
+/*
+ * User Service to find and load user by username
  */
 @Service
 public class UserServiceImpl implements UserService {

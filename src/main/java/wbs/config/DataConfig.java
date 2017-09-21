@@ -13,7 +13,10 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-//Hibernate and database configuration
+/*
+ * Hibernate and database configuration
+ * Change the value of the properties file name in the PropertySource annotation to switch to a MySQL Database
+ */
 
 @Configuration
 @EnableJpaRepositories(basePackages = "wbs.repository")

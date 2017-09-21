@@ -10,9 +10,14 @@ import java.util.List;
 public interface WBSElementService {
 
     List<WBSElement> findAll();
+
     WBSElement findbyId(Long id);
+
     WBSElement create(WBSElement element);
+
     WBSElement edit(WBSElement element);
+
     void deleteById(Long id);
+
     void delete(WBSElement element);
 }

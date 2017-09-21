@@ -52,16 +52,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests()
+                .authorizeRequests()
                 .anyRequest().hasRole("USER")
                 .and()
-            .formLogin()
+                .formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .successHandler(loginSuccessHandler())
                 .failureHandler(loginFailureHandler())
                 .and()
-            .logout()
+                .logout()
                 .permitAll()
                 .logoutSuccessUrl("/login");
     }
@@ -90,7 +90,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public Object getRootObject() {
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                return new SecurityExpressionRoot(authentication) {};
+                return new SecurityExpressionRoot(authentication) {
+                };
             }
         };
     }

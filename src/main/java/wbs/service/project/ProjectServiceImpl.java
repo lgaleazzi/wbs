@@ -2,17 +2,20 @@ package wbs.service.project;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wbs.model.wbs.elements.WBSElement;
-import wbs.repository.ProjectRepository;
-import wbs.model.project.Project;
 import wbs.exceptions.ObjectNotFoundException;
 import wbs.exceptions.UnauthorizedException;
+import wbs.model.project.Project;
+import wbs.model.wbs.elements.WBSElement;
+import wbs.repository.ProjectRepository;
 import wbs.service.wbs.WBSNodeService;
 import wbs.service.wbs.WBSTreeService;
 import wbs.service.wbs.elements.WBSElementService;
 
 import java.util.List;
 
+/*
+ * Project service to manage the project for authorized user (user created the project)
+ */
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -58,7 +61,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project edit(Project project) {
-        if(currentUserIsAuthorized(project.getId())) {
+        if (currentUserIsAuthorized(project.getId())) {
             Project savedProject = projectRepository.save(project);
 
             WBSElement element = savedProject.getWbsTree().getRoot().getElement();
@@ -76,15 +79,16 @@ public class ProjectServiceImpl implements ProjectService {
         if (projectRepository.findOne(id) == null) {
             throw new ObjectNotFoundException("The project was not found");
         }
-        if(!currentUserIsAuthorized(id)) {
+        if (!currentUserIsAuthorized(id)) {
             throw new UnauthorizedException("You are not allowed to access this project");
         }
         projectRepository.delete(id);
     }
 
+    //Check if the current user is authorized to see the project with given id (user created the project)
     @Override
     public boolean currentUserIsAuthorized(Long id) {
-        if(projectRepository.findForCurrentUser(id) == null && projectRepository.findOne(id) != null) {
+        if (projectRepository.findForCurrentUser(id) == null && projectRepository.findOne(id) != null) {
             return false;
         }
         return true;

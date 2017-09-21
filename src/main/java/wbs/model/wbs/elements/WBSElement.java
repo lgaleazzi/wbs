@@ -1,7 +1,6 @@
 package wbs.model.wbs.elements;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 //parent class for all elements in the WBS tree
@@ -23,26 +22,13 @@ public class WBSElement {
     @Column
     @Size(max = 2000)
     private String description;
-
-    //enum listing the subclasses of WBSElement
-    public enum ElementType {
-        StandardWBSElement("Standard"), WorkPackage("Work package");
-
-        private String name;
-
-        ElementType(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
-
     //this column is managed automatically (inheritance relationship)
     @Column(name = "Element_Type", insertable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private ElementType elementType;
+
+    public WBSElement() {
+    }
 
     @PrePersist
     public void prePersist() {
@@ -59,9 +45,6 @@ public class WBSElement {
             this.setName(DEFAULT_NAME);
         }
     }
-
-    public WBSElement() {}
-
 
     public Long getId() {
         return id;
@@ -97,7 +80,7 @@ public class WBSElement {
 
     public boolean acceptsChildren() {
         return true;
-    };
+    }
 
     @Override
     public String toString() {
@@ -107,5 +90,42 @@ public class WBSElement {
                 ", description='" + description + '\'' +
                 ", elementType=" + elementType +
                 '}';
+    }
+
+    ;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WBSElement element = (WBSElement) o;
+
+        if (id != null ? !id.equals(element.id) : element.id != null) return false;
+        if (name != null ? !name.equals(element.name) : element.name != null) return false;
+        return elementType == element.elementType;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (elementType != null ? elementType.hashCode() : 0);
+        return result;
+    }
+
+    //enum listing the subclasses of WBSElement
+    public enum ElementType {
+        StandardWBSElement("Standard"), WorkPackage("Work package");
+
+        private String name;
+
+        ElementType(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }

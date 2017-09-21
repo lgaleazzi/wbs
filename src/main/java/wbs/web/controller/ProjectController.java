@@ -16,6 +16,10 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
+/*
+ * Controller for projects
+ */
+
 @Controller
 @SessionAttributes({"project"})
 public class ProjectController {

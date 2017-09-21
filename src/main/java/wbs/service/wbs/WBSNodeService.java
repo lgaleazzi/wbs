@@ -8,9 +8,14 @@ import java.util.List;
 public interface WBSNodeService {
 
     List<WBSNode> findAll();
+
     WBSNode findbyId(Long id);
+
     WBSNode create(WBSNode node);
+
     WBSNode createFromParentNode(WBSElement wbsElement, WBSNode parentNode);
+
     WBSNode edit(WBSNode node);
+
     void deleteById(Long id);
 }

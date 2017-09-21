@@ -7,7 +7,8 @@ import javax.persistence.Entity;
 @DiscriminatorValue("StandardWBSElement")
 public class StandardWBSElement extends WBSElement {
 
-    public StandardWBSElement() {}
+    public StandardWBSElement() {
+    }
 
     @Override
     public boolean acceptsChildren() {

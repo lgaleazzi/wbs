@@ -2,8 +2,8 @@ package wbs.service.wbs.elements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wbs.repository.WBSElementRepository;
 import wbs.model.wbs.elements.WBSElement;
+import wbs.repository.WBSElementRepository;
 
 import java.util.List;
 

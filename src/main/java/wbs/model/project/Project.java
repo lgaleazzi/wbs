@@ -7,10 +7,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-//Each project contains one WBS tree holding the project's work breakdown structure
+/*
+ * Each project contains one WBS tree holding the project's work breakdown structure
+ * Each project belongs to a user
+ */
 
 @Entity
-@Table(name="projects")
+@Table(name = "projects")
 public class Project {
 
     @Id
@@ -91,5 +94,23 @@ public class Project {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Project project = (Project) o;
+
+        if (id != null ? !id.equals(project.id) : project.id != null) return false;
+        return name != null ? name.equals(project.name) : project.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
     }
 }

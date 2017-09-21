@@ -10,15 +10,14 @@ import java.util.List;
 import java.util.Queue;
 
 @Entity
-@Table(name="tree")
+@Table(name = "tree")
 public class WBSTree {
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rootnode_id")
+    protected WBSNode root;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="rootnode_id")
-    protected WBSNode root;
 
     public WBSTree(WBSNode root) {
         if (root.hasParent()) {
@@ -90,9 +89,35 @@ public class WBSTree {
                 for (int i = 0; i < node.getChildren().size(); i++) {
                     WBSNode child = node.getChildren().get(i);
                     queue.add(child);
-                    child.setBreakdownId(node.getBreakdownId()+"."+(i+1));
+                    child.setBreakdownId(node.getBreakdownId() + "." + (i + 1));
                 }
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "WBSTree{" +
+                "id=" + id +
+                ", root=" + root +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WBSTree wbsTree = (WBSTree) o;
+
+        if (id != null ? !id.equals(wbsTree.id) : wbsTree.id != null) return false;
+        return root != null ? root.equals(wbsTree.root) : wbsTree.root == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (root != null ? root.hashCode() : 0);
+        return result;
     }
 }

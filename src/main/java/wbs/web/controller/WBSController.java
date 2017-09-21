@@ -1,18 +1,17 @@
 package wbs.web.controller;
 
-import com.sun.xml.internal.ws.api.pipe.FiberContextSwitchInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import wbs.exceptions.InvalidObjectException;
 import wbs.model.wbs.WBSNode;
 import wbs.model.wbs.WBSTree;
 import wbs.model.wbs.elements.StandardWBSElement;
 import wbs.model.wbs.elements.WBSElement;
 import wbs.model.wbs.elements.WorkPackage;
-import wbs.exceptions.InvalidObjectException;
 import wbs.service.wbs.WBSNodeService;
 import wbs.service.wbs.WBSTreeService;
 import wbs.service.wbs.elements.WBSElementService;
@@ -25,7 +24,9 @@ import java.util.List;
 import static wbs.web.WBSElementConverter.convertWBSElementToStandard;
 import static wbs.web.WBSElementConverter.convertWBSElementToWorkPackage;
 
-//TODO: implement data validation for WBS elements
+/*
+ * Controller for all WBS Elements including tree view display
+ */
 
 @Controller
 @SessionAttributes({"element"})
@@ -87,7 +88,7 @@ public class WBSController {
     }
 
     //add a child WBSElement to a node and redirect to the tree
-    @RequestMapping(value = "/wbs/add/{parentNodeId}",method = RequestMethod.POST)
+    @RequestMapping(value = "/wbs/add/{parentNodeId}", method = RequestMethod.POST)
     public String addChild(@ModelAttribute("element") @Valid WBSElement wbsElement, BindingResult result, RedirectAttributes redirectAttributes, @PathVariable Long parentNodeId) {
         WBSNode parentNode = wbsNodeService.findbyId(parentNodeId);
 
@@ -96,7 +97,7 @@ public class WBSController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.element", result);
             redirectAttributes.addFlashAttribute("flash", new FlashMessage("Please check form data", FlashMessage.Status.DANGER));
             redirectAttributes.addFlashAttribute("repopulateElement", wbsElement);
-            return "redirect:/wbs/add/"+parentNodeId;
+            return "redirect:/wbs/add/" + parentNodeId;
         }
 
         //if no errors, find out element type and create it
@@ -106,14 +107,14 @@ public class WBSController {
             wbsNodeService.createFromParentNode(workPackage, parentNode);
         }
         //if user entered elementType = standard, convert the element to type StandardWBSElement and create it
-        else if(wbsElement.getElementType() == WBSElement.ElementType.StandardWBSElement) {
+        else if (wbsElement.getElementType() == WBSElement.ElementType.StandardWBSElement) {
             StandardWBSElement standardWBSElement = convertWBSElementToStandard(wbsElement);
             wbsNodeService.createFromParentNode(standardWBSElement, parentNode);
         }
 
         redirectAttributes.addFlashAttribute("flash", new FlashMessage("Element created", FlashMessage.Status.SUCCESS));
 
-        return "redirect:/wbs/"+parentNode.getTree().getId();
+        return "redirect:/wbs/" + parentNode.getTree().getId();
     }
 
     //deleting node with subtree and redirecting to the tree
@@ -122,7 +123,7 @@ public class WBSController {
         WBSNode node = wbsNodeService.findbyId(nodeId);
         Long treeId = node.getTree().getId();
         wbsNodeService.deleteById(nodeId);
-        return "redirect:/wbs/"+treeId;
+        return "redirect:/wbs/" + treeId;
     }
 
 
@@ -149,13 +150,13 @@ public class WBSController {
     @RequestMapping(value = "wbs/element/{nodeId}", method = RequestMethod.POST)
     public String editStandardWBSElement(@ModelAttribute("element") StandardWBSElement element, @PathVariable Long nodeId) {
         wbsElementService.edit(element);
-        return "redirect:/wbs/element/"+nodeId;
+        return "redirect:/wbs/element/" + nodeId;
     }
 
     //Edit a WorkPackage
     @RequestMapping(value = "wbs/wp_element/{nodeId}", method = RequestMethod.POST)
     public String editWorkPackage(@ModelAttribute("element") WorkPackage workPackage, @PathVariable Long nodeId) {
         wbsElementService.edit(workPackage);
-        return "redirect:/wbs/element/"+nodeId;
+        return "redirect:/wbs/element/" + nodeId;
     }
 }
