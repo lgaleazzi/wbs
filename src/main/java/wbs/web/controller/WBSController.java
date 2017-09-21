@@ -77,6 +77,9 @@ public class WBSController {
             model.addAttribute("element", model.asMap().get("repopulateElement"));
         } else {
             WBSElement element = new WBSElement();
+            //Set element type field to "StandardWBSElement" so that the Element Type option "Standard" is selected by default
+            //in the input form. The user can change the choice is necessary
+            element.setElementType(WBSElement.ElementType.StandardWBSElement);
             model.addAttribute("element", element);
         }
 

@@ -1,6 +1,7 @@
 package wbs.model.wbs.elements;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 //parent class for all elements in the WBS tree
