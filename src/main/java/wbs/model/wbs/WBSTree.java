@@ -110,14 +110,11 @@ public class WBSTree {
 
         WBSTree wbsTree = (WBSTree) o;
 
-        if (id != null ? !id.equals(wbsTree.id) : wbsTree.id != null) return false;
-        return root != null ? root.equals(wbsTree.root) : wbsTree.root == null;
+        return id != null ? id.equals(wbsTree.id) : wbsTree.id == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (root != null ? root.hashCode() : 0);
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 }
